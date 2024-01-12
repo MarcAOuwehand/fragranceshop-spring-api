@@ -20,25 +20,25 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf()
-            .disable()
-            .authorizeHttpRequests()
-            .requestMatchers(HttpMethod.GET, "/api/v1/auth/**", "/api/products")
-            .permitAll().requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuth, UsernamePasswordAuthenticationFilter.class)
+                .csrf().disable()
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .antMatchers(HttpMethod.GET, "/api/v1/auth/**", "/api/products").permitAll()
+                                .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuth, UsernamePasswordAuthenticationFilter.class)
                 .apply(corsConfigurer());
 
         return http.build();
     }
+
 
     private CorsConfigurer<HttpSecurity> corsConfigurer(){
         return new CorsConfigurer<>();
