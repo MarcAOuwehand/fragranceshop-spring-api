@@ -1,6 +1,9 @@
 package com.example.webshopapi.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity
@@ -10,10 +13,24 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID productID;
+
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 50, message = "Name must not be longer than 50 characters")
     private String name;
+
+    @NotBlank(message = "Image path is mandatory")
+    @Size(max = 250, message = "Image path must not be longer than 250 characters")
     private String img_path;
+
+    @PositiveOrZero(message = "Price must not be negative")
     private double price;
+
+    @NotBlank(message = "Description is mandatory")
+    @Size(max = 250, message = "Description must not be longer than 250 characters")
     private String description;
+
+    @NotBlank(message = "Brand is mandatory")
+    @Size(max = 50, message = "Brand must not be longer than 50 characters")
     private String brand;
 
     public UUID getProductID() {

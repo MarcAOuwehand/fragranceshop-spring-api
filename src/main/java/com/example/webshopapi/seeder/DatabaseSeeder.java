@@ -13,7 +13,7 @@ public class DatabaseSeeder {
     @Autowired
     private ProductSeeder productSeeder;
     @Autowired
-    private PromoCodeSeeder promoCodeSeeder;
+    private UserSeeder userSeeder;
 
 
     @EventListener
@@ -23,7 +23,7 @@ public class DatabaseSeeder {
         }
 
         productSeeder.seed();
-        promoCodeSeeder.seed();
+        userSeeder.seed();
 
         this.alreadySeeded = true;
     }
