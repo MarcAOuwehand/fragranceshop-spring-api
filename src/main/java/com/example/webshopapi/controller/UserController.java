@@ -6,6 +6,7 @@ import com.example.webshopapi.model.ApiResponse;
 import com.example.webshopapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse get(@PathVariable UUID id) {
         User user;
@@ -37,6 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse delete(@PathVariable UUID id){
         try{
@@ -50,6 +53,7 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseBody
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ApiResponse save(@RequestBody User newUser){
         User user = this.userDAO.save(newUser);
         return new ApiResponse(HttpStatus.ACCEPTED, user);

@@ -6,6 +6,7 @@ import com.example.webshopapi.model.ApiResponse;
 import com.example.webshopapi.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -36,6 +37,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse save(@RequestBody Product newProduct){
         Product product = this.productDAO.save(newProduct);
@@ -43,6 +45,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse replace(@RequestBody Product product, @PathVariable UUID id){
         try{
@@ -55,6 +58,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PATCH)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse update(@RequestBody Product product, @PathVariable UUID id){
         try{
@@ -67,6 +71,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse delete(@PathVariable UUID id){
         try{

@@ -9,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +25,11 @@ public class User implements UserDetails {
     @GeneratedValue
     private UUID id;
     @Column(unique = true)
+    @NotBlank(message = "Field cannot be null")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message="Email is invalid")
     private String email;
+    @NotBlank(message = "Password is mandatory")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message="Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=).")
     private String password;
 
     @Enumerated(EnumType.STRING)

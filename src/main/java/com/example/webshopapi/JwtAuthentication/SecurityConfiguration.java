@@ -27,6 +27,7 @@ public class SecurityConfiguration {
                         authorizeRequests
                                 .antMatchers(HttpMethod.GET, "/api/v1/auth/**", "/api/products").permitAll()
                                 .antMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                                .antMatchers(HttpMethod.DELETE, "/api/products/**").hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement()

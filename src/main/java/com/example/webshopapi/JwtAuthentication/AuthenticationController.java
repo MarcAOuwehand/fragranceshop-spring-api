@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -18,6 +20,13 @@ public class AuthenticationController {
             @RequestBody RegisterRequest request
     ){
         return ResponseEntity.ok(service.register(request));
+    }
+
+    @PostMapping("/registerAdmin")
+    public ResponseEntity<AuthenticationResonse> registerAdmin(
+            @RequestBody RegisterRequest request
+    ) throws AccessDeniedException {
+        return ResponseEntity.ok(service.registerAdmin(request));
     }
 
     @PostMapping("/authenticate")
