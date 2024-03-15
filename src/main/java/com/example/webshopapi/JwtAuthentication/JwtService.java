@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -33,13 +35,19 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails, uuid);
     }
 
-    public String generateToken(Map<String, Object> exstraClaim, UserDetails userDetails, UUID uuid){
+    public String generateToken(Map<String, Object> extraClaim, UserDetails userDetails, UUID uuid) {
+        String authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        extraClaim.put("authorities", authorities);
+
         return Jwts.builder()
-                .setClaims(exstraClaim)
+                .setClaims(extraClaim)
                 .setSubject(userDetails.getUsername())
                 .claim("id", uuid)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // Aangepast naar 24 uur
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message="Email is invalid")
     private String email;
     @NotBlank(message = "Password is mandatory")
-//    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message="Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=).")
     private String password;
 
     @Enumerated(EnumType.STRING)
