@@ -37,7 +37,6 @@ public class OrderController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public ApiResponse save(@RequestBody Order newOrder){
         Order order = this.orderDAO.save(newOrder);

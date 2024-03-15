@@ -1,7 +1,7 @@
 package com.example.webshopapi.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -11,7 +11,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID orderID;
-    @NotBlank
+
+    @NotNull
     private UUID userID;
 
     public UUID getOrderID() {
